@@ -3,6 +3,7 @@ import "./ConferenceEvent.css";
 import TotalCost from "./TotalCost";
 import { useSelector, useDispatch } from "react-redux";
 import { incrementQuantity, decrementQuantity } from "./venueSlice";
+import { incrementAvQuantity, decrementAvQuantity } from "./avSlice";
 const ConferenceEvent = () => {
     const [showItems, setShowItems] = useState(false);
     const [numberOfPeople, setNumberOfPeople] = useState(1);
@@ -29,9 +30,11 @@ const ConferenceEvent = () => {
         }
       };
     const handleIncrementAvQuantity = (index) => {
+        dispatch(incrementAvQuantity(index));
     };
 
     const handleDecrementAvQuantity = (index) => {
+        dispatch(decrementAvQuantity(index));
     };
 
     const handleMealSelection = (index) => {
@@ -54,8 +57,15 @@ const ConferenceEvent = () => {
             totalCost += item.cost * item.quantity;
           });
         }
+        else if(section === "av"){
+            avItems.forEach((item) => {
+                totalCost += item.cost * item.quantity;
+            });
+        }
         return totalCost;
       };
+    
+    const avTotalCost = calculateTotalCost("av");
     const venueTotalCost = calculateTotalCost("venue");
 
     const navigateToProducts = (idType) => {
@@ -173,7 +183,7 @@ const ConferenceEvent = () => {
                                         </div>
                                     ))}
                                 </div>
-                                <div className="total_cost">Total Cost:</div>
+                                <div className="total_cost">Total Cost: {avTotalCost}</div>
 
                             </div>
 
